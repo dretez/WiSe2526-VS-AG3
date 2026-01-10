@@ -1,4 +1,4 @@
-package main.java.de.haw.vs.termin3.json.network;
+package de.haw.vs.termin3.common.network;
 
 import java.io.*;
 import java.net.Socket;

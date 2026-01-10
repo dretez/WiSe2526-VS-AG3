@@ -1,4 +1,4 @@
-package main.java.de.haw.vs.termin3.json;
+package de.haw.vs.termin3.common.json;
 
 import java.util.List;
 import java.util.Map;
