@@ -1,10 +1,11 @@
 package de.haw.vs.termin3.client;
 
+import de.haw.vs.termin3.common.network.Port;
+
 import java.io.IOException;
 import java.net.Socket;
 
 public class Client {
-    private static final int DEFAULT_PORT = 3000;
     private static final String DEFAULT_HOST = "127.0.0.1";
 
     private final Socket clientSocket;
@@ -13,7 +14,7 @@ public class Client {
         this.clientSocket = new Socket(host, port);
     }
     public Client(String host) throws IOException {
-        this(host, DEFAULT_PORT);
+        this(host, Port.DEFAULT.port());
     }
     public Client() throws IOException {
         this(DEFAULT_HOST);
