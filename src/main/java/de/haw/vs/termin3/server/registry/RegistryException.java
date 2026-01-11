@@ -1,4 +1,4 @@
-package de.haw.vs.termin3.server;
+package de.haw.vs.termin3.server.registry;
 
 public class RegistryException extends Exception  {
     private final String code;

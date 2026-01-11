@@ -1,6 +1,7 @@
 package de.haw.vs.termin3.server;
 
 import de.haw.vs.termin3.common.network.CommunicationInterface;
+import de.haw.vs.termin3.server.registry.Registry;
 import de.haw.vs.termin3.server.request.RequestHandler;
 
 import java.io.IOException;
@@ -8,10 +9,11 @@ import java.net.Socket;
 
 public class ClientHandler extends Thread {
     private final Socket client;
-    private Registry registry = new Registry();
+    private final Registry registry;
 
     public ClientHandler(Socket client) {
         this.client = client;
+        this.registry = new Registry();
     }
 
     @Override
