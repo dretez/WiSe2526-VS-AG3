@@ -20,10 +20,12 @@ public class Registry {
 
         RegistryEntry registry = new RegistryEntry(name,ip,port,type);
         this.registry.put(name, registry);
+        System.out.println("hey");
     }
 
     public void unregister(String name) throws RegistryException {
         if (name == null || name.isBlank()) throw new RegistryException("INVALID_NAME", "name must not be empty");
+        if(!registry.containsKey(name))throw new RegistryException("INVALID_NAME", "name is not registered");
         registry.remove(name);
 
     }

@@ -9,6 +9,7 @@ import de.haw.vs.termin3.server.registry.RegistryEntry;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Array;
 import java.util.List;
 
 final class ListRequestHandler extends RequestHandler{
@@ -26,7 +27,13 @@ final class ListRequestHandler extends RequestHandler{
         try {
             CommunicationInterface.sendRequest(client, builder.toString());
         } catch (IOException e) {
+
             System.err.println("Unable to send list to client: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected  void sendError(Socket client, String code, String message) {
+
     }
 }

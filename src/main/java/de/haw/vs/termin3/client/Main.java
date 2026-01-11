@@ -8,7 +8,8 @@ public class Main {
 
         try {
             client.regist("Niko", "client");
-            client.regist("Niko", "client");
+            client.unregist("Niko");
+            client.unregist("Niko");
             client.unregist("Niko");
 
         }catch (Exception e) {

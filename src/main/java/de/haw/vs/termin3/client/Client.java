@@ -1,5 +1,6 @@
 package de.haw.vs.termin3.client;
 
+import de.haw.vs.termin3.common.json.JSONReader;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
 import de.haw.vs.termin3.common.network.Port;
 
@@ -42,7 +43,15 @@ public class Client {
                         + "\"type\":\"" + type + "\""
                         + "}";
         try {
-            CommunicationInterface.sendRequest(clientSocket, request);
+            CommunicationInterface.sendRequest(clientSocket, request);       // send
+            String response = CommunicationInterface.awaitReply(clientSocket); // receive
+
+            JSONReader reader = new JSONReader(response);
+            if ("error".equals(String.valueOf(reader.get("status")))) {
+                System.out.println("Registration failed: " + reader.get("message"));
+            } else {
+                System.out.println("Registration successful");
+            }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -56,6 +65,15 @@ public class Client {
                         + "}";
         try {
             CommunicationInterface.sendRequest(clientSocket, request);
+
+            String response = CommunicationInterface.awaitReply(clientSocket); // receive
+
+            JSONReader reader = new JSONReader(response);
+            if ("error".equals(String.valueOf(reader.get("status")))) {
+                System.out.println("Unregistration failed: " + reader.get("message"));
+            } else {
+                System.out.println("Unregistration successful");
+            }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
