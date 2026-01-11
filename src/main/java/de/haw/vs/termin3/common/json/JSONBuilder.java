@@ -1,6 +1,5 @@
 package de.haw.vs.termin3.common.json;
 
-import java.sql.Array;
 import java.util.*;
 
 public class JSONBuilder {
@@ -14,7 +13,7 @@ public class JSONBuilder {
         put(key, value);
     }
 
-    public void putArray(String key, Array array) {
+    public void putArray(String key, List<?> array) {
         put(key, array);
     }
 
