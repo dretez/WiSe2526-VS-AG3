@@ -35,7 +35,7 @@ public class Client {
     public void regist(String name,String type) {
         String request =
                 "{"
-                        + "\"request\":\"regist\","
+                        + "\"request\":\"register\","
                         + "\"name\":\"" + name + "\","
                         + "\"ip\":\"" + ip + "\","
                         + "\"port\":" + 6000 + ","
@@ -51,7 +51,7 @@ public class Client {
     public void unregist(String name) {
         String request =
                 "{"
-                        + "\"request\":\"unregist\","
+                        + "\"request\":\"unregister\","
                         + "\"name\":\"" + name + "\""
                         + "}";
         try {

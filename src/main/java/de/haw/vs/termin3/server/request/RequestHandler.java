@@ -5,7 +5,7 @@ import de.haw.vs.termin3.server.registry.Registry;
 
 import java.net.Socket;
 
-public abstract sealed class RequestHandler permits ExampleRequestHandler, RegisterRequestHandler, UnregisterRequestHandler,ListRequestHandler {
+public abstract sealed class RequestHandler permits RegisterRequestHandler, UnregisterRequestHandler,ListRequestHandler {
     protected final Registry registry;
 
     protected RequestHandler(Registry registry) {
@@ -15,9 +15,8 @@ public abstract sealed class RequestHandler permits ExampleRequestHandler, Regis
     public static void handle(String request, Socket client, Registry registry) {
         JSONReader reader = new JSONReader(request);
         RequestHandler handler = switch ((String) reader.get("request")) {
-            case "example" -> new ExampleRequestHandler();
-            case "regist" -> new RegisterRequestHandler(registry);
-            case "unregist" -> new UnregisterRequestHandler(registry);
+            case "register" -> new RegisterRequestHandler(registry);
+            case "unregister" -> new UnregisterRequestHandler(registry);
             case "list" -> new ListRequestHandler(registry);
             default -> throw new IllegalStateException("Unexpected value: " + reader.get("request"));
         };

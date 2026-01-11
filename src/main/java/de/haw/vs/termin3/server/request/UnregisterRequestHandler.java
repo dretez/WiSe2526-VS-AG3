@@ -6,9 +6,7 @@ import de.haw.vs.termin3.server.registry.RegistryException;
 
 import java.net.Socket;
 
-public final class UnregisterRequestHandler extends RequestHandler {
-    String request;
-
+final class UnregisterRequestHandler extends RequestHandler {
     UnregisterRequestHandler(Registry registry) {
         super(registry);
     }
@@ -19,7 +17,7 @@ public final class UnregisterRequestHandler extends RequestHandler {
         try {
             registry.unregister(name);
         } catch (RegistryException e) {
-            throw new RuntimeException(e);
+            System.err.println("Unable to unregister \"" + name + "\": " + e.getMessage());
         }
     }
 }
