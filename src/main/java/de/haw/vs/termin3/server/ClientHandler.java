@@ -8,6 +8,7 @@ import java.net.Socket;
 
 public class ClientHandler extends Thread {
     private final Socket client;
+    private Registry registry = new Registry();
 
     public ClientHandler(Socket client) {
         this.client = client;
@@ -27,6 +28,6 @@ public class ClientHandler extends Thread {
     private void handleNextRequest() throws IOException {
         String request = CommunicationInterface.awaitReply(client);
         if (request == null) throw new IOException("Connection closed");
-        RequestHandler.handle(request, client);
+        RequestHandler.handle(request, client,registry);
     }
 }
