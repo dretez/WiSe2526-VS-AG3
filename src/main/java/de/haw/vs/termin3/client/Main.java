@@ -7,13 +7,12 @@ public class Main {
         Client client = new Client();
 
         try {
-            client.regist("Niko", "client");
-            client.unregist("Niko");
-            client.unregist("Niko");
-            client.unregist("Niko");
-
-        }catch (Exception e) {
-            e.printStackTrace();
+            client.register("Niko", "client");
+            client.unregister("Niko");
+            client.unregister("Niko");
+            client.unregister("Niko");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 }

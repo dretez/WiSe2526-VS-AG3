@@ -24,5 +24,4 @@ public abstract sealed class RequestHandler permits RegisterRequestHandler, Unre
     }
 
     protected abstract void handle(JSONReader reader, Socket client);
-    protected abstract void sendError(Socket client, String code, String message);
 }

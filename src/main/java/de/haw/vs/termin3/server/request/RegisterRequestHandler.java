@@ -1,5 +1,6 @@
 package de.haw.vs.termin3.server.request;
 
+import de.haw.vs.termin3.common.json.JSONBuilder;
 import de.haw.vs.termin3.common.json.JSONReader;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
 import de.haw.vs.termin3.server.registry.EntryType;
@@ -28,30 +29,26 @@ final class RegisterRequestHandler extends RequestHandler {
             sendError(client,e.getCode(), e.getMessage());
         }
     }
-    @Override
-    protected void sendError(Socket client, String code, String message){
-        String request =
-                "{"
-                        + "\"request\":\"registerReply\","
-                        + "\"status\":\"error\","
-                        + "\"error\":\"" + code + "\","
-                        + "\"message\":\"" + message + "\""
-                        + "}";
+
+    private void sendError(Socket client, String code, String message){
+        JSONBuilder builder = new JSONBuilder();
+        builder.putString("request", "registerReply");
+        builder.putString("status", "error");
+        builder.putString("error", code);
+        builder.putString("message", message);
         try {
-            CommunicationInterface.sendRequest(client, request);
+            CommunicationInterface.sendRequest(client, builder.toString());
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
     private void sendOk(Socket client) {
-        String response =
-                "{"
-                        + "\"request\":\"registerReply\","
-                        + "\"status\":\"ok\""
-                        + "}";
+        JSONBuilder builder = new JSONBuilder();
+        builder.putString("request", "registerReply");
+        builder.putString("status", "ok");
         try {
-            CommunicationInterface.sendRequest(client, response);
+            CommunicationInterface.sendRequest(client, builder.toString());
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

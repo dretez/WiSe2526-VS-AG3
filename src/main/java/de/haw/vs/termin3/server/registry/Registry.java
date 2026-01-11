@@ -20,7 +20,6 @@ public class Registry {
 
         RegistryEntry registry = new RegistryEntry(name,ip,port,type);
         this.registry.put(name, registry);
-        System.out.println("hey");
     }
 
     public void unregister(String name) throws RegistryException {
