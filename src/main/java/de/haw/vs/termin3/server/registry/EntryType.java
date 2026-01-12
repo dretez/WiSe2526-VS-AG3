@@ -8,6 +8,7 @@ public enum EntryType {
         return switch (string.toLowerCase()) {
             case "client" -> CLIENT;
             case "robot" -> ROBOT;
+            case "all" -> null;
             default -> throw new IllegalArgumentException("Unexpected value: " + string);
         };
     }

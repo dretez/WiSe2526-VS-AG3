@@ -7,6 +7,10 @@ public class Terminal {
     private final Client client;
     private final Scanner sc = new Scanner(System.in);
 
+    public Terminal(Client client) {
+        this.client = client;
+    }
+
     public Terminal() throws Exception {
         this.client = new Client();
     }
@@ -16,8 +20,6 @@ public class Terminal {
     }
 
     public void terminalLoop() throws Exception {
-        Scanner sc = new Scanner(System.in);
-
         while (true) {
             System.out.println("\nCommands: regist | unregist | list | quit");
             System.out.print("> ");
@@ -27,7 +29,10 @@ public class Terminal {
                 case "regist" -> regist();
                 case "unregist" -> unregist();
                 case "list" -> list();
-                case "quit" -> System.exit(0);
+                case "quit" -> {
+                    client.stop();
+                    return;
+                }
                 default -> System.out.println("Unknown command.");
             }
         }
