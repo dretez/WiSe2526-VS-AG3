@@ -61,9 +61,7 @@ public class Terminal {
     }
 
     public void list() throws Exception {
-        System.out.print("List type (robot/client/all): ");
-        String type = sc.nextLine().trim();
-        client.list(type);
+        client.list();
     }
 
 }

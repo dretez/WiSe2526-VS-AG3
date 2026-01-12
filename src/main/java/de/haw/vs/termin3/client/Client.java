@@ -70,10 +70,10 @@ public class Client {
         }
     }
 
-    public void list(String type) throws IOException {
+    public void list() throws IOException {
         JSONBuilder builder = new JSONBuilder();
         builder.putString("request", "list");
-        builder.putString("type", type);
+        builder.putString("type", "robot");
         try {
             String response = CommunicationInterface.sendAndAwait(clientSocket, builder.toString());
 
