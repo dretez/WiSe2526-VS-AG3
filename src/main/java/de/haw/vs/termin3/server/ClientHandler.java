@@ -11,9 +11,9 @@ public class ClientHandler extends Thread {
     private final Socket client;
     private final Registry registry;
 
-    public ClientHandler(Socket client) {
+    public ClientHandler(Socket client, Registry registry) {
         this.client = client;
-        this.registry = new Registry();
+        this.registry = registry;
     }
 
     @Override
