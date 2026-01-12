@@ -22,7 +22,7 @@ final class ListRequestHandler extends RequestHandler{
         List<String> list = registry.list(type).stream().map(RegistryEntry::toJSON).toList();
         JSONBuilder builder = new JSONBuilder();
         builder.putString("request", "listReply");
-        builder.putArray("list", list);
+        builder.putArray("list",list);
         try {
             CommunicationInterface.sendRequest(client, builder.toString());
         } catch (IOException e) {
