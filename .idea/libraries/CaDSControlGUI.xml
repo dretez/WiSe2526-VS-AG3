@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CaDSControlGUI">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/CaDSControlGUI.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

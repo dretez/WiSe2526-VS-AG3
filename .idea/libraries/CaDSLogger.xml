@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CaDSLogger">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/CaDSLogger.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CaDSRMI">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/CaDSRMI.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
