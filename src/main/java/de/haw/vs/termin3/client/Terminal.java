@@ -6,6 +6,7 @@ public class Terminal {
 
     private final Client client;
     private final Scanner sc = new Scanner(System.in);
+    private String name;
 
     public Terminal(Client client) {
         this.client = client;
@@ -13,23 +14,40 @@ public class Terminal {
 
     public Terminal() throws Exception {
         this.client = new Client();
+        this.name = "";
     }
 
     public void start() throws Exception {
+        login();
         terminalLoop();
     }
 
-    public void terminalLoop() throws Exception {
+    private void login() {
+        System.out.println("Please enter a user name");
         while (true) {
-            System.out.println("\nCommands: regist | unregist | list | quit");
+            System.out.print("> ");
+            String name = sc.nextLine().trim();
+            try {
+                client.register(name);
+                this.name = name;
+                return;
+            } catch (RuntimeException e) {
+                System.err.println("Login failed: " + e.getMessage());
+            }
+        }
+    }
+
+    public void terminalLoop() throws Exception {
+        help();
+        while (true) {
             System.out.print("> ");
             String cmd = sc.nextLine().trim();
 
             switch (cmd) {
-                case "regist" -> regist();
-                case "unregist" -> unregist();
+                case "help" -> help();
                 case "list" -> list();
                 case "quit" -> {
+                    client.unregister(this.name);
                     client.stop();
                     return;
                 }
@@ -38,20 +56,8 @@ public class Terminal {
         }
     }
 
-    public void regist() throws Exception {
-        System.out.print("Enter name: ");
-        String name = sc.nextLine().trim();
-
-        System.out.print("Type (client/robot): ");
-        String type = sc.nextLine().trim();
-
-        client.register(name, type);
-    }
-
-    public void unregist() throws Exception {
-        System.out.print("Enter name: ");
-        String name = sc.nextLine().trim();
-        client.unregister(name);
+    private void help() {
+        System.out.println("\nCommands: list | quit");
     }
 
     public void list() throws Exception {

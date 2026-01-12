@@ -33,11 +33,11 @@ public class Client {
         clientSocket.close();
     }
 
-    public void register(String name, String type) {
+    public void register(String name) throws RuntimeException {
         JSONBuilder builder = new JSONBuilder();
         builder.putString("request", "register");
         builder.putString("name", name);
-        builder.putString("type", type);
+        builder.putString("type", "client");
         builder.putString("ip", ip);
         builder.putNumber("port", port);
         try {
@@ -45,7 +45,7 @@ public class Client {
 
             JSONReader reader = new JSONReader(response);
             if ("error".equals(String.valueOf(reader.get("status"))))
-                throw new RuntimeException("Registration failed: " + reader.get("message"));
+                throw new RuntimeException(reader.get("message").toString());
             System.out.println("Registration successful");
         } catch (IOException e) {
             System.err.println(e.getMessage());
