@@ -1,6 +1,7 @@
 package de.haw.vs.termin3.client;
 
 import de.haw.vs.termin3.client.command.ClientCommand;
+import de.haw.vs.termin3.client.exceptions.LoginFailureException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -52,7 +53,8 @@ public class Terminal {
     }
 
     private void welcome() {
-        System.out.println("\nCommands: list | quit");
+        System.out.println("Welcome " + client.name());
+        System.out.println("Use help to get a list of available commands");
     }
 
     public void stop() {

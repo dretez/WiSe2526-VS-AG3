@@ -10,7 +10,6 @@ import de.haw.vs.termin3.server.registry.Registry;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.List;
 
 final class ListRequestHandler extends RequestHandler{
     ListRequestHandler(Registry registry) {

@@ -47,6 +47,8 @@ public class Registry {
     }
 
     private List<RegistryEntry> list() {
-        return registry.values().stream().toList();
+        synchronized (mutexes.get("read")) {
+            return registry.values().stream().toList();
+        }
     }
 }

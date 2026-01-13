@@ -7,7 +7,7 @@ import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
 import java.net.Socket;
 
-public abstract sealed class RequestHandler permits HomeRequest, LeftRightRequest {
+public abstract sealed class RequestHandler permits HomeRequest, LeftRightRequest, ReleaseRequest {
     protected final ICaDSRoboticArm arm;
 
     protected RequestHandler(ICaDSRoboticArm arm) {
@@ -17,6 +17,7 @@ public abstract sealed class RequestHandler permits HomeRequest, LeftRightReques
     public static void handle(String request, Socket client, ICaDSRoboticArm arm) throws JsonProcessingException {
         JsonNode json = JSON.parse(request);
         RequestHandler handler = switch (json.get("request").asText()) {
+            case "release" -> new ReleaseRequest(arm);
             case "leftRight" -> new LeftRightRequest(arm);
             case "home" -> new HomeRequest(arm);
             default -> throw new IllegalStateException("Unexpected value: " + json.get("request").asText());

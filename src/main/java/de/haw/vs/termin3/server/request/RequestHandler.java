@@ -7,7 +7,7 @@ import de.haw.vs.termin3.server.registry.Registry;
 
 import java.net.Socket;
 
-public abstract sealed class RequestHandler permits RegisterRequestHandler, UnregisterRequestHandler,ListRequestHandler {
+public abstract sealed class RequestHandler permits ListRequestHandler, RegisterRequestHandler, UnregisterRequestHandler, UseRobotRequest {
     protected final Registry registry;
 
     protected RequestHandler(Registry registry) {
@@ -20,6 +20,7 @@ public abstract sealed class RequestHandler permits RegisterRequestHandler, Unre
             case "register" -> new RegisterRequestHandler(registry);
             case "unregister" -> new UnregisterRequestHandler(registry);
             case "list" -> new ListRequestHandler(registry);
+            case "use" -> new UseRobotRequest(registry);
             default -> throw new IllegalStateException("Unexpected value: " + json.get("request"));
         };
         handler.handle(json, client);
