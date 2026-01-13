@@ -3,6 +3,7 @@ package de.haw.vs.termin3.robot;
 import de.haw.vs.termin3.common.json.JSONBuilder;
 import de.haw.vs.termin3.common.json.JSONReader;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
+import de.haw.vs.termin3.robot.ClientHandler;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
 import java.io.IOException;
@@ -30,7 +31,13 @@ public class RobotNode {
             throw new IOException(reader.get("message").toString());
     }
 
-    public void setLeftRightPercentageTo(int i) {
-        arm.setLeftRightPercentageTo(i);
+    public void start() {
+        while (true) {
+            try {
+                new ClientHandler(server.accept(), arm).start();
+            } catch (IOException e) {
+                return;
+            }
+        }
     }
 }
