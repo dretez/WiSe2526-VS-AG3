@@ -1,67 +1,61 @@
 package de.haw.vs.termin3.client;
 
+import de.haw.vs.termin3.client.command.ClientCommand;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Terminal {
-
+    private final Scanner sc;
     private final Client client;
-    private final Scanner sc = new Scanner(System.in);
-    private String name;
+    private boolean running;
 
-    public Terminal(Client client) {
+    private Terminal(Scanner scanner, Client client) {
+        this.sc = scanner;
         this.client = client;
+        this.running = true;
     }
 
-    public Terminal() throws Exception {
-        this.client = new Client();
-        this.name = "";
+    public Client client() {
+        return client;
     }
 
-    public void start() throws Exception {
-        login();
-        terminalLoop();
+    public static void start(String registryIP, int port) {
+        login(registryIP, port).terminalLoop();
     }
 
-    private void login() {
+    private static Terminal login(String registryIP, int port) {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Please enter a user name");
         while (true) {
             System.out.print("> ");
             String name = sc.nextLine().trim();
             try {
-                client.register(name);
-                this.name = name;
-                return;
-            } catch (RuntimeException e) {
-                System.err.println("Login failed: " + e.getMessage());
+                Client client = new Client(name, registryIP, port);
+                client.register();
+                return new Terminal(sc, client);
+            } catch (LoginFailureException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    public void terminalLoop() throws Exception {
-        help();
-        while (true) {
+    public void terminalLoop() {
+        welcome();
+        while (running) {
             System.out.print("> ");
             String cmd = sc.nextLine().trim();
-
-            switch (cmd) {
-                case "help" -> help();
-                case "list" -> list();
-                case "quit" -> {
-                    client.unregister(this.name);
-                    client.stop();
-                    return;
-                }
-                default -> System.out.println("Unknown command.");
-            }
+            ClientCommand.handle(cmd.trim().split("\\s+"), this);
         }
     }
 
-    private void help() {
+    private void welcome() {
         System.out.println("\nCommands: list | quit");
     }
 
-    public void list() throws Exception {
-        client.list();
+    public void stop() {
+        this.running = false;
     }
-
 }

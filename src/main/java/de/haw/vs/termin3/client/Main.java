@@ -5,8 +5,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         try {
-            Terminal terminal = new Terminal();
-            terminal.start();
+            Terminal.start("localhost", 8000);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
