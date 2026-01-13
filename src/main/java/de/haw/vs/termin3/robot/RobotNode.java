@@ -1,7 +1,8 @@
 package de.haw.vs.termin3.robot;
 
-import de.haw.vs.termin3.common.json.JSONBuilder;
-import de.haw.vs.termin3.common.json.JSONReader;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.haw.vs.termin3.common.json.JSON;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
@@ -25,15 +26,15 @@ public class RobotNode {
         this.clients = new ArrayList<>();
         int port = this.server.getLocalPort();
         this.registry = new Socket(registryIP, registryPort);
-        JSONBuilder builder = new JSONBuilder();
-        builder.putString("request", "register");
-        builder.putString("name", name);
-        builder.putString("type", "client");
-        builder.putString("ip", registry.getLocalAddress().getHostAddress());
-        builder.putNumber("port", port);
-        JSONReader reader = new JSONReader(CommunicationInterface.sendAndAwait(this.registry, builder.toString()));
-        if ("error".equals(reader.get("status")))
-            throw new IOException(reader.get("message").toString());
+        ObjectNode builder = JSON.getEmptyObject();
+        builder.put("request", "register");
+        builder.put("name", name);
+        builder.put("type", "client");
+        builder.put("ip", registry.getLocalAddress().getHostAddress());
+        builder.put("port", port);
+        JsonNode reader = JSON.parse(CommunicationInterface.sendAndAwait(this.registry, JSON.toString(builder)));
+        if ("error".equals(reader.get("status").asText()))
+            throw new IOException(reader.get("message").asText());
     }
 
     public void start() {
@@ -50,11 +51,11 @@ public class RobotNode {
     }
 
     private void stop() {
-        JSONBuilder builder = new JSONBuilder();
-        builder.putString("request", "unregister");
-        builder.putString("name", name);
+        ObjectNode builder = JSON.getEmptyObject();
+        builder.put("request", "unregister");
+        builder.put("name", name);
         try {
-            CommunicationInterface.sendRequest(registry, builder.toString());
+            CommunicationInterface.sendRequest(registry, JSON.toString(builder));
         } catch (IOException _) {
         }
     }

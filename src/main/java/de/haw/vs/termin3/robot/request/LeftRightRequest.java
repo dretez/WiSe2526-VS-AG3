@@ -1,6 +1,6 @@
 package de.haw.vs.termin3.robot.request;
 
-import de.haw.vs.termin3.common.json.JSONReader;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
 import java.net.Socket;
@@ -11,8 +11,8 @@ public final class LeftRightRequest extends RequestHandler {
     }
 
     @Override
-    protected void handle(JSONReader reader, Socket client) {
-        int i = (int) reader.get("i");
+    protected void handle(JsonNode json, Socket client) {
+        int i = json.get("i").asInt();
         arm.setLeftRightPercentageTo(i);
     }
 }

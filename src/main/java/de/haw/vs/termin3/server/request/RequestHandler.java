@@ -1,6 +1,8 @@
 package de.haw.vs.termin3.server.request;
 
-import de.haw.vs.termin3.common.json.JSONReader;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import de.haw.vs.termin3.common.json.JSON;
 import de.haw.vs.termin3.server.registry.Registry;
 
 import java.net.Socket;
@@ -12,16 +14,16 @@ public abstract sealed class RequestHandler permits RegisterRequestHandler, Unre
         this.registry = registry;
     }
 
-    public static void handle(String request, Socket client, Registry registry) {
-        JSONReader reader = new JSONReader(request);
-        RequestHandler handler = switch ((String) reader.get("request")) {
+    public static void handle(String request, Socket client, Registry registry) throws JsonProcessingException {
+        JsonNode json = JSON.parse(request);
+        RequestHandler handler = switch (json.get("request").asText()) {
             case "register" -> new RegisterRequestHandler(registry);
             case "unregister" -> new UnregisterRequestHandler(registry);
             case "list" -> new ListRequestHandler(registry);
-            default -> throw new IllegalStateException("Unexpected value: " + reader.get("request"));
+            default -> throw new IllegalStateException("Unexpected value: " + json.get("request"));
         };
-        handler.handle(reader, client);
+        handler.handle(json, client);
     }
 
-    protected abstract void handle(JSONReader reader, Socket client);
+    protected abstract void handle(JsonNode json, Socket client);
 }

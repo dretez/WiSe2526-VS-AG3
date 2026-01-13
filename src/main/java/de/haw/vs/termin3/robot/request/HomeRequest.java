@@ -1,6 +1,6 @@
 package de.haw.vs.termin3.robot.request;
 
-import de.haw.vs.termin3.common.json.JSONReader;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
 import java.net.Socket;
@@ -11,7 +11,7 @@ public final class HomeRequest extends RequestHandler {
     }
 
     @Override
-    protected void handle(JSONReader reader, Socket client) {
+    protected void handle(JsonNode json, Socket client) {
         arm.setLeftRightPercentageTo(0);
         arm.setUpDownPercentageTo(0);
         arm.setBackForthPercentageTo(0);

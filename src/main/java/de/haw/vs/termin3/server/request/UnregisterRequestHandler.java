@@ -1,7 +1,8 @@
 package de.haw.vs.termin3.server.request;
 
-import de.haw.vs.termin3.common.json.JSONBuilder;
-import de.haw.vs.termin3.common.json.JSONReader;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.haw.vs.termin3.common.json.JSON;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
 import de.haw.vs.termin3.server.registry.Registry;
 import de.haw.vs.termin3.server.registry.RegistryException;
@@ -15,8 +16,8 @@ final class UnregisterRequestHandler extends RequestHandler {
     }
 
     @Override
-    protected void handle(JSONReader reader, Socket client) {
-        String name = reader.get("name").toString();
+    protected void handle(JsonNode json, Socket client) {
+        String name = json.get("name").toString();
         try {
             registry.unregister(name);
             sendOk(client);
@@ -27,24 +28,24 @@ final class UnregisterRequestHandler extends RequestHandler {
     }
 
     private void sendError(Socket client, String code, String message) {
-        JSONBuilder builder = new JSONBuilder();
-        builder.putString("request", "unregisterReply");
-        builder.putString("status", "error");
-        builder.putString("error", code);
-        builder.putString("message", message);
+        ObjectNode builder = JSON.getEmptyObject();
+        builder.put("request", "unregisterReply");
+        builder.put("status", "error");
+        builder.put("error", code);
+        builder.put("message", message);
         try {
-            CommunicationInterface.sendRequest(client, builder.toString());
+            CommunicationInterface.sendRequest(client, JSON.toString(builder));
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
     private void sendOk(Socket client) {
-        JSONBuilder builder = new JSONBuilder();
-        builder.putString("request", "unregisterReply");
-        builder.putString("status", "ok");
+        ObjectNode builder = JSON.getEmptyObject();
+        builder.put("request", "unregisterReply");
+        builder.put("status", "ok");
         try {
-            CommunicationInterface.sendRequest(client, builder.toString());
+            CommunicationInterface.sendRequest(client, JSON.toString(builder));
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
