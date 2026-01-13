@@ -4,30 +4,31 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.haw.vs.termin3.common.json.JSON;
 import de.haw.vs.termin3.common.network.CommunicationInterface;
+import de.haw.vs.termin3.server.ClientInterface;
 import de.haw.vs.termin3.server.registry.EntryType;
 import de.haw.vs.termin3.server.registry.Registry;
+import de.haw.vs.termin3.server.registry.RegistryEntry;
 import de.haw.vs.termin3.server.registry.RegistryException;
 
 import java.io.IOException;
 import java.net.Socket;
 
 final class RegisterRequestHandler extends RequestHandler {
-    RegisterRequestHandler(Registry registry) {
-        super(registry);
-    }
-
     @Override
-    protected void handle(JsonNode json, Socket client) {
+    protected void handle(JsonNode json, ClientInterface client, Registry registry) {
         String name = json.get("name").toString();
         String ip = json.get("ip").toString();
         int port = Integer.parseInt(json.get("port").toString());
         EntryType type = EntryType.fromString(json.get("type").toString());
 
         try {
-            registry.register(name, ip, port,type);
-            sendOk(client);
+            if (client.entry() != null)
+                throw new RegistryException("ILLEGAL_REGISTRATION", "This socket has already been registered");
+            RegistryEntry entry = registry.register(name, ip, port, type);
+            client.setEntry(entry);
+            sendOk(client.socket(), registry.register(name, ip, port,type));
         } catch (RegistryException e) {
-            sendError(client,e.getCode(), e.getMessage());
+            sendError(client.socket(), e.getCode(), e.getMessage());
         }
     }
 
@@ -44,9 +45,10 @@ final class RegisterRequestHandler extends RequestHandler {
         }
     }
 
-    private void sendOk(Socket client) {
+    private void sendOk(Socket client, RegistryEntry entry) {
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "registerReply");
+        builder.put("id", entry.getId());
         builder.put("status", "ok");
         try {
             CommunicationInterface.sendRequest(client, JSON.toString(builder));

@@ -8,12 +8,12 @@ public class Registry {
 
     public Registry() {
         registry = new HashMap<>();
-        mutexes = Collections.synchronizedMap(new WeakHashMap<>());
+        mutexes = Collections.synchronizedMap(new HashMap<>());
         mutexes.put("write", new Object());
         mutexes.put("read", new Object());
     }
 
-    public void register(String name, String ip, int port, EntryType type) throws RegistryException {
+    public RegistryEntry register(String name, String ip, int port, EntryType type) throws RegistryException {
         synchronized (mutexes.get("write")) {
             if (name == null || name.isBlank()) throw new RegistryException("INVALID_NAME", "name must not be empty");
             if(registry.containsKey(name))throw new RegistryException("DUPLICATED_NAME", "name is already registered");
@@ -24,6 +24,7 @@ public class Registry {
             synchronized (mutexes.get("read")) {
                 RegistryEntry registry = new RegistryEntry(name, ip, port, type);
                 this.registry.put(name, registry);
+                return registry;
             }
         }
     }
