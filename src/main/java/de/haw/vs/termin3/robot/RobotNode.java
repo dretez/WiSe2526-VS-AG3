@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RobotNode {
@@ -23,7 +24,7 @@ public class RobotNode {
         this.name = name;
         this.arm = arm;
         this.server = new ServerSocket();
-        this.clients = new ArrayList<>();
+        this.clients = Collections.synchronizedList(new ArrayList<>());
         int port = this.server.getLocalPort();
         this.registry = new Socket(registryIP, registryPort);
         ObjectNode builder = JSON.getEmptyObject();
@@ -42,7 +43,7 @@ public class RobotNode {
             try {
                 Socket client = server.accept();
                 clients.add(client);
-                new ClientHandler(client, arm).start();
+                new ClientHandler(clients, client, arm).start();
             } catch (IOException e) {
                 stop();
                 return;
@@ -51,11 +52,23 @@ public class RobotNode {
     }
 
     private void stop() {
+        synchronized (clients) {
+            for (Socket socket : clients) {
+                try {
+                    socket.close();
+                } catch (IOException _) {
+                }
+            }
+        }
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "unregister");
         builder.put("name", name);
         try {
             CommunicationInterface.sendRequest(registry, JSON.toString(builder));
+        } catch (IOException _) {
+        }
+        try {
+            registry.close();
         } catch (IOException _) {
         }
     }

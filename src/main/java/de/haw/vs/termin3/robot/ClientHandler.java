@@ -6,12 +6,15 @@ import org.cads.vs.roboticArm.hal.ICaDSRoboticArm;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler extends Thread {
+    private final List<Socket> allClients;
     private final Socket client;
     private final ICaDSRoboticArm arm;
 
-    public ClientHandler(Socket client, ICaDSRoboticArm arm) {
+    public ClientHandler(List<Socket> allClients, Socket client, ICaDSRoboticArm arm) {
+        this.allClients = allClients;
         this.client = client;
         this.arm = arm;
     }
@@ -22,6 +25,7 @@ public class ClientHandler extends Thread {
             try {
                 handleNextRequest();
             } catch (IOException _) {
+                allClients.remove(client);
                 return;
             }
         }
