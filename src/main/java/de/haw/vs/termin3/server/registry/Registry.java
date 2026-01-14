@@ -16,9 +16,9 @@ public class Registry {
     public RegistryEntry register(String name, String ip, int port, EntryType type) throws RegistryException {
         synchronized (mutexes.get("write")) {
             if (name == null || name.isBlank()) throw new RegistryException("INVALID_NAME", "name must not be empty");
-            if(registry.containsKey(name))throw new RegistryException("DUPLICATED_NAME", "name is already registered");
+            if(registry.containsKey(name)) throw new RegistryException("DUPLICATED_NAME", "name is already registered");
             if (ip == null || ip.isBlank()) throw new RegistryException("INVALID_IP", "ip must not be empty");
-            if (port < 1 || port > 65535) throw new RegistryException("INVALID_PORT", "port must be 1..65535");
+            if (port < 1 || port > 65535) throw new RegistryException("INVALID_PORT", "port must be 1..65535, received: " + port);
             if (type == null) throw new RegistryException("INVALID_TYPE", "type must be 'client' or 'robot'");
 
             synchronized (mutexes.get("read")) {

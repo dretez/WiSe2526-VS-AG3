@@ -23,7 +23,7 @@ public class RobotNode {
     public RobotNode(String name, String registryIP, int registryPort, ICaDSRoboticArm arm) throws IOException {
         this.name = name;
         this.arm = arm;
-        this.server = new ServerSocket();
+        this.server = new ServerSocket(0);
         this.clients = Collections.synchronizedList(new ArrayList<>());
         int port = this.server.getLocalPort();
         this.registry = new Socket(registryIP, registryPort);

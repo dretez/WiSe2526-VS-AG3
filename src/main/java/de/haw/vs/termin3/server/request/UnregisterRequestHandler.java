@@ -14,7 +14,7 @@ import java.net.Socket;
 final class UnregisterRequestHandler extends RequestHandler {
     @Override
     protected void handle(JsonNode json, ClientInterface client, Registry registry) {
-        String name = json.get("name").toString();
+        String name = json.get("name").asText();
         try {
             registry.unregister(name);
             sendOk(client.socket());

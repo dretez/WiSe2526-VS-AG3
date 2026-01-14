@@ -25,7 +25,7 @@ public class Client {
     private NeighborClientInfo successor = null;
 
     public Client(String name, String host, int port) throws IOException {
-        this.tokenServerSocket = new ServerSocket();
+        this.tokenServerSocket = new ServerSocket(0);
         this.clientSocket = new Socket(host, port);
         this.name = name;
         this.robots = new HashMap<>();
@@ -51,7 +51,7 @@ public class Client {
         return name;
     }
 
-    public void giveToken() {
+    public synchronized void giveToken() {
         hasToken = true;
     }
 
@@ -155,7 +155,7 @@ public class Client {
         List<JsonNode> list = new ArrayList<>();
         json.get("list").forEach(list::add);
         list.sort(Comparator.comparingInt(i -> i.get("id").asInt()));
-        int index = list.indexOf(list().stream().filter(i -> i.get("id").asInt() == this.id).toList().getFirst());
+        int index = list.indexOf(list.stream().filter(i -> i.get("id").asInt() == this.id).toList().getFirst());
         if (list.size() > 1) {
             JsonNode successor = list.get((index + 1) % list.size());
             this.successor = new NeighborClientInfo(successor.get("id").asInt(), successor.get("ip").asText(), successor.get("port").asInt());

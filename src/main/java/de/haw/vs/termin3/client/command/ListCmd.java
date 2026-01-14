@@ -13,10 +13,11 @@ final class ListCmd extends ClientCommand {
             System.out.println("Currently selected robots:");
         terminal.client().robots().forEach(System.out::println);
         List<JsonNode> list = terminal.client().list();
-        if (!list.isEmpty())
+        if (!list.isEmpty()) {
             System.out.println("Available robots:");
-        list.forEach(i -> System.out.printf(" - %d | %s | %s:%d%n",
-                i.get("id").asInt(), i.get("name").asText(), i.get("ip").asText(), i.get("port").asInt()
-        ));
+            list.forEach(i -> System.out.printf(" - %d | %s | %s:%d%n",
+                    i.get("id").asInt(), i.get("name").asText(), i.get("ip").asText(), i.get("port").asInt()
+            ));
+        }
     }
 }

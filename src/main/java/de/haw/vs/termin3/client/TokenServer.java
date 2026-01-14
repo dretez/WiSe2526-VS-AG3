@@ -14,7 +14,7 @@ public class TokenServer extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (!server.isClosed()) {
             try {
                 new NeighborHandler(server.accept(), client).start();
             } catch (IOException _) {

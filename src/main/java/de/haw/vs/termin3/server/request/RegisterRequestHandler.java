@@ -16,17 +16,17 @@ import java.net.Socket;
 final class RegisterRequestHandler extends RequestHandler {
     @Override
     protected void handle(JsonNode json, ClientInterface client, Registry registry) {
-        String name = json.get("name").toString();
-        String ip = json.get("ip").toString();
-        int port = Integer.parseInt(json.get("port").toString());
-        EntryType type = EntryType.fromString(json.get("type").toString());
+        String name = json.get("name").asText();
+        String ip = json.get("ip").asText();
+        int port = Integer.parseInt(json.get("port").asText());
+        EntryType type = EntryType.fromString(json.get("type").asText());
 
         try {
             if (client.entry() != null)
                 throw new RegistryException("ILLEGAL_REGISTRATION", "This socket has already been registered");
             RegistryEntry entry = registry.register(name, ip, port, type);
             client.setEntry(entry);
-            sendOk(client.socket(), registry.register(name, ip, port,type));
+            sendOk(client.socket(), entry);
         } catch (RegistryException e) {
             sendError(client.socket(), e.getCode(), e.getMessage());
         }
