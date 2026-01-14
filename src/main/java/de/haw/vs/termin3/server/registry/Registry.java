@@ -40,6 +40,8 @@ public class Registry {
     }
 
     public List<RegistryEntry> list(EntryType type) {
+        if (type == null)
+            return list();
         synchronized (mutexes.get("read")) {
             if (type == null)
                 return list();
