@@ -113,7 +113,7 @@ public class Client {
         builder.put("name", name);
         String response = CommunicationInterface.sendAndAwait(clientSocket, JSON.toString(builder));
         JsonNode json = JSON.parse(response);
-        if ("error".equals(json.get("status").asText()))
+        if ("error".equals(json.path("status").asText()))
             throw new RobotUnavailableException("Could not connect to robot \"" + name + "\": " + json.get("message").asText());
         try {
             Socket socket = new Socket(json.get("ip").asText(), json.get("port").asInt());

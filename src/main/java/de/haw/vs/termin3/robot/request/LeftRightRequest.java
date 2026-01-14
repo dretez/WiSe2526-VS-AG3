@@ -13,6 +13,9 @@ public final class LeftRightRequest extends RequestHandler {
     @Override
     protected void handle(JsonNode json, Socket client) {
         int i = json.get("i").asInt();
-        arm.setLeftRightPercentageTo(i);
+        try {
+            arm.setLeftRightPercentageTo(i);
+        } catch (Exception _) {
+        }
     }
 }

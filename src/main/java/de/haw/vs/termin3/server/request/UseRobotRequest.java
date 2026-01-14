@@ -11,19 +11,25 @@ import de.haw.vs.termin3.server.registry.RegistryEntry;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.Objects;
 
 final class UseRobotRequest extends RequestHandler {
     @Override
     protected void handle(JsonNode json, ClientInterface client, Registry registry) {
         if (!json.path("name").isTextual()) {
-            error(client.socket());
+            error(client.socket(), "No valid name provided");
             return;
         }
         String name = json.get("name").asText();
-        RegistryEntry entry = registry.list(EntryType.ROBOT).stream().filter(
+        List<RegistryEntry> list = registry.list(EntryType.ROBOT).stream().filter(
                 e -> Objects.equals(e.getName(), name)
-        ).toList().getFirst();
+        ).toList();
+        if (list.isEmpty()) {
+            error(client.socket(), "No such robot available");
+            return;
+        }
+        RegistryEntry entry = list.getFirst();
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "useReply");
         builder.put("ip", entry.getIp());
@@ -35,11 +41,11 @@ final class UseRobotRequest extends RequestHandler {
         }
     }
 
-    private void error(Socket client) {
+    private void error(Socket client, String message) {
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "useReply");
         builder.put("status", "error");
-        builder.put("message", "No valid name provided");
+        builder.put("message", message);
         try {
             CommunicationInterface.sendRequest(client, JSON.toString(builder));
         } catch (IOException e) {

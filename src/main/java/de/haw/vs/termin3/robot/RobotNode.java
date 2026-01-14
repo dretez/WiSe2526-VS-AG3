@@ -30,7 +30,7 @@ public class RobotNode {
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "register");
         builder.put("name", name);
-        builder.put("type", "client");
+        builder.put("type", "robot");
         builder.put("ip", registry.getLocalAddress().getHostAddress());
         builder.put("port", port);
         JsonNode reader = JSON.parse(CommunicationInterface.sendAndAwait(this.registry, JSON.toString(builder)));

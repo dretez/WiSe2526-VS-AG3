@@ -20,7 +20,7 @@ final class ListRequestHandler extends RequestHandler{
         ArrayNode list = builder.putArray("list");
         registry.list(type).forEach(list::addPOJO);
         try {
-            CommunicationInterface.sendRequest(client.socket(), builder.toString());
+            CommunicationInterface.sendRequest(client.socket(), JSON.toString(builder));
         } catch (IOException e) {
             System.err.println("Unable to send list to client: " + e.getMessage());
         }

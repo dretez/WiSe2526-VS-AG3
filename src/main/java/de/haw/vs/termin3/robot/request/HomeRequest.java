@@ -12,9 +12,9 @@ public final class HomeRequest extends RequestHandler {
 
     @Override
     protected void handle(JsonNode json, Socket client) {
-        arm.setLeftRightPercentageTo(0);
-        arm.setUpDownPercentageTo(0);
-        arm.setBackForthPercentageTo(0);
-        arm.setOpenClosePercentageTo(0);
+        arm.setLeftRightPercentageTo(50);
+        arm.setUpDownPercentageTo(50);
+        arm.setBackForthPercentageTo(50);
+        arm.setOpenClosePercentageTo(50);
     }
 }
