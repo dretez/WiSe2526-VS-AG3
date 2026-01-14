@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Robot - Simulated 2" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.haw.vs.termin3.robot.MainSimulated" />
+    <module name="WiSe2526-VS-AG3" />
+    <option name="PROGRAM_PARAMETERS" value="robot-simulated-2" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

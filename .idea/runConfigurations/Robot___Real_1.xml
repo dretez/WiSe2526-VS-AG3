@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Robot - Real 1" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.haw.vs.termin3.robot.MainReal" />
+    <module name="WiSe2526-VS-AG3" />
+    <option name="PROGRAM_PARAMETERS" value="robot-real-1" />
+    <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

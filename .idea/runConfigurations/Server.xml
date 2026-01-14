@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Server" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.haw.vs.termin3.server.Main" />
+    <module name="WiSe2526-VS-AG3" />
+    <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.haw.vs.termin3.server.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
