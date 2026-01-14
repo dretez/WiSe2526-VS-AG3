@@ -108,7 +108,6 @@ public class Client {
     }
 
     public void useRobot(String name) throws IOException, RobotUnavailableException {
-        if (!validateToken()) return;
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "use");
         builder.put("name", name);
@@ -137,6 +136,7 @@ public class Client {
         robots();
         for (var robot : robots.entrySet())
             robot.getValue().leftRight(i);
+        passToken();
     }
 
     public void resetRobotPositions() throws IOException {
@@ -144,6 +144,7 @@ public class Client {
         robots();
         for (var robot : robots.entrySet())
             robot.getValue().goHome();
+        passToken();
     }
 
     private List<JsonNode> queryNeighbours() throws IOException {
@@ -186,6 +187,11 @@ public class Client {
     }
 
     private boolean validateToken() {
+        try {
+            queryNeighbours();
+        } catch (IOException e) {
+            System.err.println("failed to query neighbors: " + e.getMessage());
+        }
         if (!hasToken)
             System.out.println("You do not hold the token.");
         return hasToken;
