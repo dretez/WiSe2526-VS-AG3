@@ -40,7 +40,7 @@ public class CommunicationInterface {
     }
 
     public static void sendRequest(Socket socket, String json) throws IOException {
-        System.out.println("Sending: " + json);
+        // System.out.println("Sending: " + json);
         json = json.replace("\n", " ").replace("\r", " ");
         BufferedWriter out = getWriter(socket);
         out.write(json);
@@ -51,7 +51,7 @@ public class CommunicationInterface {
     public static String awaitReply(Socket socket) throws IOException {
         BufferedReader in = getReader(socket);
         String json = in.readLine();
-        System.out.println("Received: " + json);
+        // System.out.println("Received: " + json);
         return json;
     }
 
