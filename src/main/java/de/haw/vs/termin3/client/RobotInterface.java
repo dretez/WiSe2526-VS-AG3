@@ -16,6 +16,10 @@ public class RobotInterface {
         this.name = name;
     }
 
+    public boolean isClosed() {
+        return robot.isClosed();
+    }
+
     public void leftRight(int i) throws IOException {
         ObjectNode builder = JSON.getEmptyObject();
         builder.put("request", "leftRight");

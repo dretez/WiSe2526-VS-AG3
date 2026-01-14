@@ -103,6 +103,7 @@ public class Client {
     }
 
     public List<String> robots() {
+        robots.entrySet().removeIf(r -> r.getValue().isClosed());
         return robots.keySet().stream().toList();
     }
 
@@ -133,12 +134,14 @@ public class Client {
 
     public void rotateRobotsLR(int i) throws IOException {
         if (!validateToken()) return;
+        robots();
         for (var robot : robots.entrySet())
             robot.getValue().leftRight(i);
     }
 
     public void resetRobotPositions() throws IOException {
         if (!validateToken()) return;
+        robots();
         for (var robot : robots.entrySet())
             robot.getValue().goHome();
     }
